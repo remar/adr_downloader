@@ -1,41 +1,30 @@
-import urllib.request
-from html.parser import HTMLParser
+import urllib.request, re, time
 
-#page = urllib.request.urlopen("http://thearchdruidreport.blogspot.se")
-page = urllib.request.urlopen("file:///home/andreas/Projekt/adrdownload/index.html")
+def get_posts(base):
+    #page = urllib.request.urlopen(base)
+    page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_downloader/index.html")
 
-class ListHTMLParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.posts = []
-        self.in_archive = False
-        self.in_posts = False
+    data = page.read()
+    matches = re.findall(b"<a class='post-count-link'.*?>", data)
+    matches = filter(lambda x: b"archive" in x, matches)
+    archives = []
+    for m in matches:
+        s = m.decode('utf-8')
+        match = re.search("href='(.*?)'", s)
+        archives.append(match.group(1))
 
-    def handle_starttag(self, tag, attrs):
-        if tag == "div" and ('id', "\\'BlogArchive1_ArchiveList\\'") in attrs:
-            self.in_archive = True
-            print("In archive")
-        elif self.in_archive:
-            if tag == "ul" and ('class', "\\'posts\\'") in attrs:
-                self.in_posts = True
-            elif tag == "a" and self.in_posts:
-                for name, data in attrs:
-                    if name == "href":
-                        self.posts.append(data)
+    posts = []
 
+    for a in archives:
+        print("Getting archive " + a)
+        url = base + "/?action=getTitles&widgetId=BlogArchive1&widgetType=BlogArchive&responseType=js&path=" + a;
+        arch = urllib.request.urlopen(url)
+        res = arch.read().decode('utf-8')
+        matches = re.findall("http://.*?\.html", res)
+        matches = filter(lambda x: "archive" not in x, matches)
+        print("Found these posts:")
+        print("\n".join(matches))
+        posts.extend(matches)
+        time.sleep(5) # Don't hammer the server too hard
 
-    def handle_endtag(self, tag):
-        if tag == "div" and self.in_archive:
-            self.in_archive = False
-        if tag == "ul" and self.in_posts:
-            self.in_posts = False
-
-    def handle_data(self, data):
-        pass
-
-parser = ListHTMLParser()
-data = page.read()
-
-parser.feed(str(data))
-
-print(parser.posts)
+    return posts
