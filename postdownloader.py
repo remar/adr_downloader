@@ -2,7 +2,7 @@ import urllib.request
 from html.parser import HTMLParser
 
 #page = urllib.request.urlopen("http://thearchdruidreport.blogspot.se/2016/11/when-shouting-stops.html")
-page = urllib.request.urlopen("file:///home/andreas/Projekt/adrdownload/shouting.html")
+page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_downloader/live.html")
 
 class PageHTMLParser(HTMLParser):
     def __init__(self):
@@ -61,10 +61,17 @@ class PageHTMLParser(HTMLParser):
 parser = PageHTMLParser()
 data = page.read()
 
-parser.feed(str(data))
+#parser.feed(str(data))
 
-print(parser.title + " - " + parser.date + "\n")
+#print(parser.title + " - " + parser.date + "\n")
 
-content = [x for x in parser.content if x]
+#content = [x for x in parser.content if x]
 
-print("\n\n".join(content))
+#print("\n\n".join(content))
+
+import re
+
+start = re.search(b"<div class='post-body entry-content'", data)
+end = re.search(b"<div class='post-footer'>", data)
+
+print(data[start.start():end.start()].decode('utf-8'))
