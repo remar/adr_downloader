@@ -1,6 +1,7 @@
-import urllib.request, re, time
+import http.client, urllib.request, re, time
 
-def get_posts(base):
+def get_posts():
+    base = get_base()
     #page = urllib.request.urlopen(base)
     page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_downloader/index.html")
 
@@ -28,3 +29,26 @@ def get_posts(base):
         time.sleep(5) # Don't hammer the server too hard
 
     return posts
+
+def get_base():
+    base = "thearchdruidreport.blogspot.com"
+    conn = http.client.HTTPConnection(base)
+    conn.request("HEAD", "/")
+    r = conn.getresponse()
+
+    if r.status == 302:
+        conn.close()
+        conn = http.client.HTTPConnection(base)
+        conn.request("GET", "/")
+        r = conn.getresponse()
+        body = r.read().decode('utf-8')
+        matches = re.findall("\"http://(.*?)/\"", body)
+        if(len(matches) == 1):
+            base = matches[0]
+
+    conn.close()
+
+    return base
+
+if __name__ == "__main__":
+    print(get_base())
