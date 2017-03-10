@@ -3,7 +3,7 @@ import http.client, urllib.request, re, time
 def get_posts():
     base = get_base()
     #page = urllib.request.urlopen(base)
-    page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_downloader/index.html")
+    page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_data/index.html")
 
     data = page.read()
     matches = re.findall(b"<a class='post-count-link'.*?>", data)

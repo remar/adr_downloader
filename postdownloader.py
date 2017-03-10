@@ -2,7 +2,7 @@ import urllib.request
 from html.parser import HTMLParser
 
 #page = urllib.request.urlopen("http://thearchdruidreport.blogspot.se/2016/11/when-shouting-stops.html")
-page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_downloader/live.html")
+page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_data/shouting.html")
 
 class PageHTMLParser(HTMLParser):
     def __init__(self):
