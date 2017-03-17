@@ -18,12 +18,11 @@ def get_posts():
 
     for a in archives:
         print("Getting archive " + a)
-        url = base + "/?action=getTitles&widgetId=BlogArchive1&widgetType=BlogArchive&responseType=js&path=" + a;
+        url = "http://" + base + "/?action=getTitles&widgetId=BlogArchive1&widgetType=BlogArchive&responseType=js&path=" + a;
         arch = urllib.request.urlopen(url)
         res = arch.read().decode('utf-8')
         matches = re.findall("http://.*?\.html", res)
-        matches = filter(lambda x: "archive" not in x, matches)
-        print("Found these posts:")
+        matches = list(filter(lambda x: "archive" not in x, matches))
         print("\n".join(matches))
         posts.extend(matches)
         time.sleep(5) # Don't hammer the server too hard
@@ -51,4 +50,4 @@ def get_base():
     return base
 
 if __name__ == "__main__":
-    print(get_base())
+    print(get_posts())
