@@ -3,3 +3,9 @@
 #    run postdownloader
 #    store post in json file
 
+import postdownloader
+
+posts = ["file:///home/andreas/Projekt/adr_data/shouting.html"]
+
+for post in posts:
+    print(postdownloader.get_post(post))
