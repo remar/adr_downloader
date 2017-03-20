@@ -22,5 +22,18 @@ def get_post(post):
 
     return {"name":name, "title":title, "date":date, "content":content}
 
+def parse_date(date):
+    # Date comes in the form: "day_of_week, month day, year"
+    months = ["January", "February", "March", "April", "May", "June",
+              "July", "August", "September", "October", "November", "December"]
+    split = date.split(",")
+    year = split[2].strip()
+    month = str(months.index((split[1].strip().split(" ")[0])) + 1).zfill(2)
+    day = split[1].strip().split(" ")[1]
+    return year + "-" + month + "-" + day
+
 if __name__ == "__main__":
-    print(get_post("file:///home/andreas/Projekt/adr_data/shouting.html")["title"])
+    dates = ["Wednesday, November 16, 2016",
+             "Wednesday, September 05, 2012"]
+    for date in dates:
+        print(parse_date(date))
