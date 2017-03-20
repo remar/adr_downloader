@@ -1,8 +1,10 @@
-import http.client, urllib.request, re, time
+import http.client, urllib.request, re, time, os, json
+
+POSTS_JSON_FILE = "data/posts.json"
 
 def get_posts():
     base = get_base()
-    #page = urllib.request.urlopen(base)
+    #page = urllib.request.urlopen("http://" + base)
     page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_data/index.html")
 
     data = page.read()
@@ -14,20 +16,28 @@ def get_posts():
         match = re.search("href='(.*?)'", s)
         archives.append(match.group(1))
 
-    posts = []
+    posts = get_stored_list()
 
     for a in archives:
-        print("Getting archive " + a)
-        url = "http://" + base + "/?action=getTitles&widgetId=BlogArchive1&widgetType=BlogArchive&responseType=js&path=" + a;
-        arch = urllib.request.urlopen(url)
-        res = arch.read().decode('utf-8')
-        matches = re.findall("http://.*?\.html", res)
-        matches = list(filter(lambda x: "archive" not in x, matches))
-        print("\n".join(matches))
-        posts.extend(matches)
-        time.sleep(5) # Don't hammer the server too hard
+        if a not in posts:
+            print("Getting archive " + a)
+            url = "http://" + base + "/?action=getTitles&widgetId=BlogArchive1&widgetType=BlogArchive&responseType=js&path=" + a;
+            arch = urllib.request.urlopen(url)
+            res = arch.read().decode('utf-8')
+            matches = re.findall("http://.*?\.html", res)
+            matches = list(filter(lambda x: "archive" not in x, matches))
+            print("\n".join(matches))
+            posts[a] = matches
+            time.sleep(3) # Don't hammer the server too hard
 
-    return posts
+    store_list(posts)
+
+    posts_list = []
+
+    for key, value in posts.items():
+        posts_list.extend(value)
+
+    return sorted(posts_list)
 
 def get_base():
     base = "thearchdruidreport.blogspot.com"
@@ -47,7 +57,22 @@ def get_base():
 
     conn.close()
 
+    print("Base: " + base)
+
     return base
+
+def get_stored_list():
+    posts = {}
+    if os.path.exists(POSTS_JSON_FILE):
+        f = open(POSTS_JSON_FILE)
+        posts = json.load(f)
+        f.close()
+    return posts
+
+def store_list(posts):
+    f = open(POSTS_JSON_FILE, "w")
+    json.dump(posts, f)
+    f.close()
 
 if __name__ == "__main__":
     print(get_posts())
