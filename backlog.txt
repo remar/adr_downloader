@@ -1,0 +1,15 @@
+TODO
+----
+Make data/ directory if it's missing
+Get list of all posts and store in a JSON file
+Check if archive exists in list before getting archive from server
+Parse date in a post
+Make proper filename for a post
+Download a post and store it
+If a post already exists, don't download
+Go through list and download each post
+Take apart a post and reassemble a minimal post
+Make annual PDFs
+
+DONE
+----
