@@ -3,7 +3,10 @@
 #    run postdownloader
 #    store post in json file
 
-import postdownloader
+import postdownloader, os
+
+if not os.path.isdir("data"):
+    os.mkdir("data")
 
 posts = ["file:///home/andreas/Projekt/adr_data/shouting.html"]
 
