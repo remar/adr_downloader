@@ -1,10 +1,12 @@
 TODO
 ----
-Take apart a post and reassemble a minimal post
+Produce minimal HTML version of post
+Produce simple text version of post
 Make annual PDFs
 
 DONE
 ----
+Parse post into title, date and content
 Go through list and download each post
 If a post already exists, don't download
 Download a post and store it
