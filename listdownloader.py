@@ -61,6 +61,14 @@ def get_base():
 
     return base
 
+def get_posts_cached():
+    print("ONLY GETTING CACHED LIST OF POSTS!")
+    posts = get_stored_list()
+    posts_list = []
+    for key, value in posts.items():
+        posts_list.extend(value)
+    return sorted(posts_list)
+
 def get_stored_list():
     posts = {}
     if os.path.exists(POSTS_JSON_FILE):

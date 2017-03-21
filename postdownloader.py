@@ -6,12 +6,8 @@ def get_post(post):
 
     date = re.findall(b"<h2 class='date-header'>.*?<span>(.*?)</span>.*?</h2>", data)[0].decode('utf-8')
 
-    print("DATE: \"" + date + "\"")
-
     title = re.findall(b"<h3.*?>(.*?)</h3>", data, re.DOTALL)[0].decode('utf-8')
     title = title.strip()
-
-    print("TITLE: \"" + title.strip() + "\"")
 
     start = re.search(b"<div class='post-body entry-content'", data)
     end = re.search(b"<div class='post-footer'>", data)
@@ -31,6 +27,9 @@ def parse_date(date):
     month = str(months.index((split[1].strip().split(" ")[0])) + 1).zfill(2)
     day = split[1].strip().split(" ")[1]
     return year + "-" + month + "-" + day
+
+def get_path(post):
+    return "/".join(post.split("/")[-3:])
 
 if __name__ == "__main__":
     dates = ["Wednesday, November 16, 2016",

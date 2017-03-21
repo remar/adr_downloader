@@ -1,6 +1,5 @@
 TODO
 ----
-Make proper filename for a post
 Download a post and store it
 If a post already exists, don't download
 Go through list and download each post
@@ -9,6 +8,7 @@ Make annual PDFs
 
 DONE
 ----
+Make proper filename for a raw post
 Parse date in a post
 Check if archive exists in list before getting archive from server
 Get list of all posts and store in a JSON file
