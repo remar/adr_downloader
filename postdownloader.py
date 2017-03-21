@@ -1,6 +1,12 @@
 import urllib.request, re
 
-def get_post(post):
+def get_post(url):
+    print("Getting " + url)
+    page = urllib.request.urlopen(url)
+    data = page.read()
+    return data.decode('utf-8')
+
+def parse_post(post):
     page = urllib.request.urlopen(post)
     data = page.read()
 

@@ -1,28 +1,26 @@
-#  get list of posts, listdownloader
-#  for each post
-#    run postdownloader
-#    store post in json file
-
-import listdownloader, postdownloader, os
+import listdownloader, postdownloader, os, time
 
 if not os.path.isdir("data"):
     os.mkdir("data")
 
-posts = ["file:///home/andreas/Projekt/adr_data/shouting.html"]
-
 #posts = listdownloader.get_posts()
 posts = listdownloader.get_posts_cached()
 
-# Only get first post for now
-post_url = posts[0]
+def get_path(url):
+    return "data/raw/" + postdownloader.get_path(url)
 
-path = "data/raw/" + postdownloader.get_path(post_url)
-path_dir = "/".join(path.split("/")[:-1])
+for post_url in posts[0:6]:
+    path = get_path(post_url)
 
-print(path_dir)
-
-if not os.path.exists(path):
-    # download and store it
-    pass
-
-#print(postdownloader.get_post(post))
+    if not os.path.exists(path):
+        # download and store it
+        post_data = postdownloader.get_post(post_url)
+        path_dir = "/".join(path.split("/")[:-1])
+        if not os.path.exists(path_dir):
+            os.makedirs(path_dir)
+        f = open(path, "w")
+        f.write(post_data)
+        f.close()
+        time.sleep(5)
+    else:
+        print("Already got " + path)
