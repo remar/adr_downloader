@@ -11,6 +11,8 @@ def as_html(parsed_post):
     f.close()
 
 def make_html(parsed_post):
-    return ("<html><body><h1>" + parsed_post["title"] + "</h1>"
+    return ("<html>"
+            + "<head><meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/></head>"
+            + "<body><h1>" + parsed_post["title"] + "</h1>"
             + "<h3>" + parsed_post["date"] + "</h3>"
             + parsed_post["content"] + "</body></html>")
