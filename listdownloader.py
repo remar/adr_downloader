@@ -4,12 +4,11 @@ POSTS_JSON_FILE = "data/posts.json"
 
 def get_posts():
     base = get_base()
-    #page = urllib.request.urlopen("http://" + base)
-    page = urllib.request.urlopen("file:///home/andreas/Projekt/adr_data/index.html")
+    page = urllib.request.urlopen("http://" + base)
 
     data = page.read()
     matches = re.findall(b"<a class='post-count-link'.*?>", data)
-    matches = filter(lambda x: b"archive" in x, matches)
+    matches = filter(lambda x: x.count(b"/") == 5, matches)
     archives = []
     for m in matches:
         s = m.decode('utf-8')
@@ -24,8 +23,7 @@ def get_posts():
             url = "http://" + base + "/?action=getTitles&widgetId=BlogArchive1&widgetType=BlogArchive&responseType=js&path=" + a;
             arch = urllib.request.urlopen(url)
             res = arch.read().decode('utf-8')
-            matches = re.findall("http://.*?\.html", res)
-            matches = list(filter(lambda x: "archive" not in x, matches))
+            matches = re.findall("http://[^ ]*?\.html", res)
             print("\n".join(matches))
             posts[a] = matches
             time.sleep(3) # Don't hammer the server too hard
