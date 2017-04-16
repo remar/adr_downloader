@@ -1,8 +1,14 @@
-import urllib.request
+import urllib.request, time
 
 def get_post(url):
     print("Getting " + url)
-    page = urllib.request.urlopen(url)
+    while True:
+        try:
+            page = urllib.request.urlopen(url)
+            break
+        except:
+            print("Failed to get post " + url + ", retrying in 5 seconds")
+            time.sleep(5)
     data = page.read()
     return data.decode('utf-8')
 
