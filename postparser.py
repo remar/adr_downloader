@@ -17,9 +17,11 @@ def parse_post(path):
 
     content = data[start.start():end.start()]
 
+    images = re.findall("<img.*?src=[\"'](.*?)[\"'].*?/>", content)
+
     uid = parse_date(date) + "-" + name
 
-    return {"uid": uid, "title":title, "date":date, "content":content}
+    return {"uid": uid, "title":title, "date":date, "content":content, "images":images}
 
 def parse_date(date):
     # Date comes in the form: "day_of_week, month day, year"

@@ -1,4 +1,4 @@
-import listdownloader, postdownloader, postparser, os, time, html
+import listdownloader, postdownloader, imagedownloader, postparser, os, time, html
 
 if not os.path.isdir("data"):
     os.mkdir("data")
@@ -22,4 +22,7 @@ for post_url in posts:
         time.sleep(5) # Don't hammer the server too hard
 
     parsed_post = postparser.parse_post(path)
-    html.as_html(parsed_post)
+
+    imagedownloader.get_images(parsed_post["images"], "data/html/img")
+
+    html.as_html(parsed_post, replace_img_urls = True)

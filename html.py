@@ -1,10 +1,15 @@
 import os
 
-def as_html(parsed_post):
+def as_html(parsed_post, replace_img_urls = False):
     if not os.path.isdir("data/html"):
         os.mkdir("data/html")
 
     path = "data/html/" + parsed_post["uid"] + ".html"
+
+    if replace_img_urls:
+        for image in parsed_post["images"]:
+            new_path = "img/" + image.split("/")[-1]
+            parsed_post["content"] = parsed_post["content"].replace(image, new_path)
 
     f = open(path, "w")
     f.write(make_html(parsed_post))
