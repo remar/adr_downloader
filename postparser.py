@@ -3,7 +3,7 @@ import re
 def parse_post(path):
     name = (path.split("/")[-1]).split(".")[0]
 
-    f = open(path)
+    f = open(path, encoding = 'utf-8')
     data = f.read()
     f.close()
 

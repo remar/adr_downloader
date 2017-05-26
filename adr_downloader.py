@@ -16,7 +16,7 @@ for post_url in posts:
         path_dir = "/".join(path.split("/")[:-1])
         if not os.path.exists(path_dir):
             os.makedirs(path_dir)
-        f = open(path, "w")
+        f = open(path, "w", encoding = 'utf-8')
         f.write(post_data)
         f.close()
         time.sleep(5) # Don't hammer the server too hard

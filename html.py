@@ -11,7 +11,7 @@ def as_html(parsed_post, replace_img_urls = False):
             new_path = "img/" + image.split("/")[-1]
             parsed_post["content"] = parsed_post["content"].replace(image, new_path)
 
-    f = open(path, "w")
+    f = open(path, "w", encoding = 'utf-8')
     f.write(make_html(parsed_post))
     f.close()
 
